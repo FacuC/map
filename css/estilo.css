@@ -20,11 +20,10 @@ html, body {
 
 .botones{
   padding-top: 20px;
-  height: 15%;
   text-align: center;
 }
 
-#submit{
+#submit, #save{
   display: block;
   width: 100%;
   padding: 10px;

@@ -15,6 +15,8 @@ var param = {
   result_type: null
 }
 
+$("#save").on("click", mostrarMarcadores);
+
 function initMap() {
   var opt = { minZoom: 2, maxZoom: 18 };
   // Create a marker and set its position.
@@ -59,7 +61,7 @@ function mostrarMarcadores(){
       //console.log("load("+'"'+markers[i].position.lat()+","+markers[i].position.lng()+","+markers[i].label+'"'+")");
     }
   }
-  $("#save").html(string)
+  $("#load").html(string)
 }
 
 function addMarker(location, map) {
@@ -83,7 +85,13 @@ function addMarker(location, map) {
 
 $("#submit").on("click", function(){
   var calle = $("#lugar")[0].value;
-  geocoder.geocode({address: calle+' ,tandil'}, function(results, status) {
+  if ($("#rad").prop('checked')) {
+    calle += ' ,tandil, buenos aires, argentina';
+  }
+  else {
+    calle += 'buenos aires, argentina';
+  }
+  geocoder.geocode({address: calle}, function(results, status) {
     if (status === 'OK') {
       ubicacion = {
         lat: results[0].geometry.location.lat(),

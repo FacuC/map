@@ -89,7 +89,7 @@ $("#submit").on("click", function(){
     calle += ' ,tandil, buenos aires, argentina';
   }
   else {
-    calle += 'buenos aires, argentina';
+    calle += ' ,buenos aires, argentina';
   }
   geocoder.geocode({address: calle}, function(results, status) {
     if (status === 'OK') {

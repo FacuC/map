@@ -93,12 +93,27 @@ $("#submit").on("click", function(){
   }
   geocoder.geocode({address: calle}, function(results, status) {
     if (status === 'OK') {
+      var finaldir = "";
+      if (results.length > 1) {
+        var mensaje = "";
+        for (var i = 0; i < results.length; i++) {
+          mensaje += i+" - "+results[i].formatted_address+"\n";
+        }
+        finaldir = prompt(mensaje, "0");
+        if (finaldir === null) {
+          alert("no city");
+          return;
+        }
+      }
+      else {
+        finaldir = 0;
+      }
       ubicacion = {
-        lat: results[0].geometry.location.lat(),
-        lng: results[0].geometry.location.lng()
+        lat: results[finaldir].geometry.location.lat(),
+        lng: results[finaldir].geometry.location.lng()
       };
       map.setCenter(ubicacion);
-      addMarker(results[0].geometry.location, map)
+      addMarker(results[finaldir].geometry.location, map)
     }
     else{
       if (!(locacion === "")) {

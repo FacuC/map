@@ -4,6 +4,7 @@ var geocoder;
 var latLng;
 var zoom;
 var markers = [];
+var list = [];
 ////////////////////////////////////////////////////////////////media
 
 var myLatLng = {lat: -37.3455956, lng: -59.1401387};
@@ -64,6 +65,16 @@ function mostrarMarcadores(){
   $("#load").html(string)
 }
 
+function show() {
+  $(".marcadores").animate({width:'300px'},350);
+}
+
+function hide() {
+  $(".marcadores").animate({width:'5px'},350);
+}
+
+$(".marcadores").hover(show, hide);
+
 function addMarker(location, map) {
   // Add the marker at the clicked location, and add the next-available label
   // from the array of alphabetical characters.
@@ -81,6 +92,17 @@ function addMarker(location, map) {
                  }markers[i]
                }
             });
+  $(".marcadores").append("<div>"+$("#lugar")[0].value +", Cliente: "+ $("#idcliente")[0].value+"</div>");
+  var marks = $(".marcadores div");
+  list.push(marks[(marks.length - 1)]);
+  $(list[(list.length - 1)]).on("click", function() {
+    ubicacion = {
+      lat: markers[$(list).index(this)].position.lat(),
+      lng: markers[$(list).index(this)].position.lng()
+    };
+    map.setCenter(ubicacion);
+    //map.setCenter(ubicacion);
+  })
 }
 
 $("#submit").on("click", function(){

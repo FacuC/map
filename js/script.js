@@ -28,21 +28,22 @@ function initMap() {
 });*/
 geocoder = new google.maps.Geocoder();
 geocoder.geocode({address: "Tandil"}, function(results, status) {
+  console.log(results);
   ubicacion = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: ubicacion.lat, lng: ubicacion.lng},
     zoom: 14,
     zoomControlOptions: {
-        position: google.maps.ControlPosition.LEFT_CENTER}
-  });
-  latLng = map.getCenter().lat()
-  zoom = map.getZoom();
-  mpp = 156543.03392 * Math.cos(latLng * Math.PI / 180) / Math.pow(2, zoom);
-  map.setOptions(opt);
-  google.maps.event.addListener(map, 'click', function(event) {
+      position: google.maps.ControlPosition.LEFT_CENTER}
+    });
+    latLng = map.getCenter().lat()
+    zoom = map.getZoom();
+    mpp = 156543.03392 * Math.cos(latLng * Math.PI / 180) / Math.pow(2, zoom);
+    map.setOptions(opt);
+    google.maps.event.addListener(map, 'click', function(event) {
       addMarker(event.latLng, map);
-  });
-})
+    });
+  })
 }
 
 function load(string){
@@ -81,17 +82,18 @@ function addMarker(location, map) {
   var marker = new google.maps.Marker({
     position: location,
     label: $("#lugar")[0].value +","+ $("#idcliente")[0].value,
-    map: map
+    map: map,
+    animation: google.maps.Animation.DROP
   });
   markers.push(marker);
   google.maps.event.addListener(marker, "rightclick", function (e) {
-               marker.setMap(null);
-               for (var i = 0; i < markers.length; i++) {
-                 if (markers[i] === undefined || markers[i].map === null) {
-                   markers[i] = undefined;
-                 }markers[i]
-               }
-            });
+    marker.setMap(null);
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i] === undefined || markers[i].map === null) {
+        markers[i] = undefined;
+      }markers[i]
+    }
+  });
   $(".marcadores").append("<div>"+$("#lugar")[0].value +", Cliente: "+ $("#idcliente")[0].value+"</div>");
   var marks = $(".marcadores div");
   list.push(marks[(marks.length - 1)]);
@@ -111,7 +113,7 @@ $("#submit").on("click", function(){
     calle += ' ,tandil, buenos aires, argentina';
   }
   else {
-    calle += ' ,buenos aires, argentina';
+    calle += ' , argentina';
   }
   geocoder.geocode({address: calle}, function(results, status) {
     if (status === 'OK') {
@@ -138,11 +140,7 @@ $("#submit").on("click", function(){
       addMarker(results[finaldir].geometry.location, map)
     }
     else{
-      if (!(locacion === "")) {
-        var anuncio = "<div class='alerta mensaje'>no se encontro el lugar</div>"
-        $("#anuncio").append(anuncio);
-        $(".alerta").fadeOut(2000);
-      }
+      alert("no se encontro el lugar");
     }
   })
 })
@@ -151,23 +149,23 @@ $("#submit").on("click", function(){
 
 /*
 geocoder.geocode({address: 'constitucion 272, tandil'}, function(results, status) {
-  if (status === 'OK') {
-    ubicacion = {
-      lat: results[0].geometry.location.lat(),
-      lng: results[0].geometry.location.lng()
-    };
-    map.setCenter(ubicacion);
-    marker = new google.maps.Marker({
-            position : results[0].geometry.location,
-            Map : map
-        });
-  }
-  else{
-    if (!(locacion === "")) {
-      var anuncio = "<div class='alerta mensaje'>no se encontro el lugar</div>"
-      $("#anuncio").append(anuncio);
-      $(".alerta").fadeOut(2000);
-    }
-  }
+if (status === 'OK') {
+ubicacion = {
+lat: results[0].geometry.location.lat(),
+lng: results[0].geometry.location.lng()
+};
+map.setCenter(ubicacion);
+marker = new google.maps.Marker({
+position : results[0].geometry.location,
+Map : map
+});
+}
+else{
+if (!(locacion === "")) {
+var anuncio = "<div class='alerta mensaje'>no se encontro el lugar</div>"
+$("#anuncio").append(anuncio);
+$(".alerta").fadeOut(2000);
+}
+}
 })
 */
